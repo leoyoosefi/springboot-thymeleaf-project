@@ -18,9 +18,9 @@ import java.util.List;
 public class CategoryController {
 
     static List<CategoryView> categoryViews = new ArrayList<>(Arrays.asList(
-            new CategoryView(1, "Book", LocalDate.now()),
-            new CategoryView(2, "Shovel", LocalDate.now()),
-            new CategoryView(3, "Meatball", LocalDate.now())
+           // new CategoryView(1, "Book", LocalDate.now()),
+          //  new CategoryView(2, "Shovel", LocalDate.now()),
+           // new CategoryView(3, "Meatball", LocalDate.now())
     ));
 
 
@@ -70,6 +70,9 @@ public class CategoryController {
     @PostMapping("/add")
     public String add(@ModelAttribute("category") CategoryForm categoryForm){
         System.out.println("categoryForm =" + categoryForm);
+        int randomId = (int) (Math.random() * 100);
+        CategoryView categoryView = new CategoryView(randomId, categoryForm.getName(),LocalDate.now());
+        categoryViews.add(categoryView);
         return "redirect:/category/list";
 
     }
