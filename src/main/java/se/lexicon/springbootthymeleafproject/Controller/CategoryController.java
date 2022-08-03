@@ -70,7 +70,7 @@ public class CategoryController {
     }
 
     @PostMapping("/add")
-    public String add(@ModelAttribute("category")@Valid CategoryForm categoryForm, BindingResult bindingResult, RedirectAttributes redirectAttributes){
+    public String add(@ModelAttribute("category")@Valid CategoryForm categoryForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) throws Exception {
         System.out.println("categoryForm =" + categoryForm);
 
         if (bindingResult.hasErrors()){
@@ -83,6 +83,9 @@ public class CategoryController {
 
         redirectAttributes.addFlashAttribute("message", "Category name " + categoryView.getCategoryName() + "is successfully added");
         redirectAttributes.addFlashAttribute("alertClass", "alert alert-info");
+
+        //Custom Error
+        //throw new IllegalArgumentException("custom exception");
 
         return "redirect:/category/list";
 
