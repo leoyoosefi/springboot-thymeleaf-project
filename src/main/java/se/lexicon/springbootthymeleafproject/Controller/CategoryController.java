@@ -3,11 +3,13 @@ package se.lexicon.springbootthymeleafproject.Controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import se.lexicon.springbootthymeleafproject.model.dto.CategoryForm;
 import se.lexicon.springbootthymeleafproject.model.dto.CategoryView;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,11 +70,20 @@ public class CategoryController {
     }
 
     @PostMapping("/add")
-    public String add(@ModelAttribute("category") CategoryForm categoryForm){
+    public String add(@ModelAttribute("category")@Valid CategoryForm categoryForm, BindingResult bindingResult, RedirectAttributes redirectAttributes){
         System.out.println("categoryForm =" + categoryForm);
+
+        if (bindingResult.hasErrors()){
+            return "category/category-form";
+        }
+
         int randomId = (int) (Math.random() * 100);
         CategoryView categoryView = new CategoryView(randomId, categoryForm.getName(),LocalDate.now());
         categoryViews.add(categoryView);
+
+        redirectAttributes.addFlashAttribute("message", "Category name " + categoryView.getCategoryName() + "is successfully added");
+        redirectAttributes.addFlashAttribute("alertClass", "alert alert-info");
+
         return "redirect:/category/list";
 
     }
