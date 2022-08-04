@@ -13,6 +13,8 @@ public interface CategoryService {
     List<CategoryView> findAll();
     boolean delete(int id);
 
+    int categorySize();
+
 
 
 }
