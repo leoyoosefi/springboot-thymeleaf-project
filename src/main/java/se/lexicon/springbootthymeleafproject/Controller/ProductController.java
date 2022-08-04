@@ -11,7 +11,7 @@ public class ProductController {
 
     @GetMapping("/list")
     public String showAllProduct(){
-        return "product/product-view";
+        return "product/products-view";
     }
 
     @GetMapping("/form")

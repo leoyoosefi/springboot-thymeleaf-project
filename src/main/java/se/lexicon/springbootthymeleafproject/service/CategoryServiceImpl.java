@@ -28,7 +28,7 @@ public class CategoryServiceImpl implements CategoryService{
 
 
     @Override
-    public Category findById(int id) {
+    public CategoryView findById(int id) {
         if (id == 0) throw new IllegalArgumentException("id not valid");
         Optional<Category> categoryOptional = repository.findById(id);
         if(categoryOptional.isPresent()){
@@ -36,7 +36,7 @@ public class CategoryServiceImpl implements CategoryService{
 
 
             CategoryView categoryView = converter.toView(categoryEntity);
-            return categoryEntity;
+            return categoryView;
         }else{ return null;
     }}
 

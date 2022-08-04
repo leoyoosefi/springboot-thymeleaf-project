@@ -48,8 +48,9 @@ public class CategoryController {
 
     @PostMapping("/view")
     public String findByIdPost(@RequestParam("id") Integer id, Model model){
+        System.out.println("id = " + id);
 
-        Category categoryView = service.findById(id);
+        CategoryView categoryView = service.findById(id);
 
         model.addAttribute("categoryView", categoryView);
         return "category/category-view";
@@ -74,14 +75,14 @@ public class CategoryController {
     public String categoryForm(Model model) {
 
         CategoryForm categoryForm = new CategoryForm();
-        model.addAttribute("category", categoryForm);
+        model.addAttribute("form", categoryForm);
 
         return "category/category-form";
     }
 
 
     @PostMapping("/add")
-    public String add(@ModelAttribute("category") @Valid CategoryForm categoryForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String add(@ModelAttribute("form") @Valid CategoryForm categoryForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         System.out.println("categoryForm = " + categoryForm);
 
         if (bindingResult.hasErrors()) {

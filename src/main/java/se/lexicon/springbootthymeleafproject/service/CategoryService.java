@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CategoryService {
 
-    Category findById(int id);
+    CategoryView findById(int id);
     CategoryView create(CategoryForm form);
     List<CategoryView> findAll();
     boolean delete(int id);
