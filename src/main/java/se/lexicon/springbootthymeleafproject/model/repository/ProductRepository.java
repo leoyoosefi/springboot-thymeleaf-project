@@ -1,4 +1,4 @@
-package se.lexicon.springbootthymeleafproject.repository;
+package se.lexicon.springbootthymeleafproject.model.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import se.lexicon.springbootthymeleafproject.model.entity.Product;

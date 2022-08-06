@@ -6,7 +6,7 @@ import se.lexicon.springbootthymeleafproject.converter.CategoryConverter;
 import se.lexicon.springbootthymeleafproject.model.dto.CategoryForm;
 import se.lexicon.springbootthymeleafproject.model.dto.CategoryView;
 import se.lexicon.springbootthymeleafproject.model.entity.Category;
-import se.lexicon.springbootthymeleafproject.repository.CategoryRepository;
+import se.lexicon.springbootthymeleafproject.model.repository.CategoryRepository;
 
 import java.util.ArrayList;
 import java.util.List;
