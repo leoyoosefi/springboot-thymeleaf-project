@@ -15,18 +15,36 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception{
-        httpSecurity.authorizeHttpRequests().antMatchers("/webjars/**","/login").permitAll().anyRequest().authenticated();
-        httpSecurity.formLogin();
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        return httpSecurity.build();
+
+        http
+                .authorizeHttpRequests()
+                .antMatchers("/webjars/**", "/login", "/images/**", "/js/**", "/authenticate").permitAll()
+                .anyRequest().authenticated();
+
+        http
+                .formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/authenticate")
+                .defaultSuccessUrl("/dashboard");
+
+        return http.build();
     }
+
+
     @Bean
-    public InMemoryUserDetailsManager inMemoryUserDetailsManager(){
-        UserDetails guest = User.withDefaultPasswordEncoder().username("guest").password("guest").roles("GUEST").build();
-        UserDetails user = User.withDefaultPasswordEncoder().username("user").password("user").roles("GUEST","USER").build();
-        UserDetails admin = User.withDefaultPasswordEncoder().username("admin").password("admin").roles("GUEST","USER","ADMIN").build();
-        return new InMemoryUserDetailsManager(guest,user,admin);
+    public InMemoryUserDetailsManager userDetailsService() {
+
+        UserDetails guest = User.withDefaultPasswordEncoder()
+                .username("guest@test.se").password("guest").roles("GUEST").build();
+        UserDetails user = User.withDefaultPasswordEncoder()
+                .username("user").password("user").roles("GUEST", "USER").build();
+        UserDetails admin = User.withDefaultPasswordEncoder()
+                .username("admin").password("admin").roles("GUEST", "USER", "ADMIN").build();
+
+        return new InMemoryUserDetailsManager(guest, user, admin);
     }
+
 
 }
