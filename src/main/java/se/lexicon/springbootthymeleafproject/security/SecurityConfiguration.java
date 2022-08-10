@@ -1,8 +1,10 @@
 package se.lexicon.springbootthymeleafproject.security;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -33,7 +35,7 @@ public class SecurityConfiguration {
     }
 
 
-    @Bean
+   @Bean
     public InMemoryUserDetailsManager userDetailsService() {
 
         UserDetails guest = User.withDefaultPasswordEncoder()
@@ -44,6 +46,13 @@ public class SecurityConfiguration {
                 .username("admin").password("admin").roles("GUEST", "USER", "ADMIN").build();
 
         return new InMemoryUserDetailsManager(guest, user, admin);
+    }
+
+    @Autowired
+    CustomUserDetailsService customUserDetailsService;
+
+    public void globalConfiguration(AuthenticationManager auth){
+        auth.userDetailsService(customUserDetailsService).
     }
 
 
