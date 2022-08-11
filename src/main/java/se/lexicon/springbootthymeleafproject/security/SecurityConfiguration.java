@@ -5,10 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -22,7 +24,12 @@ public class SecurityConfiguration {
 
         http
                 .authorizeHttpRequests()
-                .antMatchers("/webjars/**", "/login", "/images/**", "/js/**", "/authenticate").permitAll()
+                .antMatchers("/webjars/**", "/login", "/images/**", "/authenticate").permitAll()
+                .antMatchers("/dashboard").hasRole("GUEST")
+                .antMatchers("/category/list").hasRole("USER")
+                .antMatchers("/category/view/**").hasRole("USER")
+                .antMatchers("/category/form").hasRole("ADMIN")
+                .antMatchers("/category/DELETE/**").hasRole("ADMIN")
                 .anyRequest().authenticated();
 
         http
@@ -39,7 +46,7 @@ public class SecurityConfiguration {
     public InMemoryUserDetailsManager userDetailsService() {
 
         UserDetails guest = User.withDefaultPasswordEncoder()
-                .username("guest@test.se").password("guest").roles("GUEST").build();
+                .username("guest").password("guest").roles("GUEST").build();
         UserDetails user = User.withDefaultPasswordEncoder()
                 .username("user").password("user").roles("GUEST", "USER").build();
         UserDetails admin = User.withDefaultPasswordEncoder()
@@ -51,8 +58,9 @@ public class SecurityConfiguration {
     @Autowired
     CustomUserDetailsService customUserDetailsService;
 
-    public void globalConfiguration(AuthenticationManager auth){
-        auth.userDetailsService(customUserDetailsService).
+    @Autowired
+    public void globalConfiguration(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(customUserDetailsService).passwordEncoder(NoOpPasswordEncoder.getInstance());
     }
 
 
